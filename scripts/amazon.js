@@ -54,10 +54,40 @@ fetch('./backend/products.json')
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart"
+          data-product-id="${product.id}"
+          >
             Add to Cart
           </button>
         </div>`;
         });
         jsProductGrid.innerHTML = productsHTML;
+
+        const jsAddToCart = document.querySelectorAll(".js-add-to-cart");
+        let cart = [];
+        jsAddToCart.forEach((button) => {
+            button.addEventListener("click", () => {
+                const productId = button.dataset.productId;
+
+                let matchingItem;
+                // Loop through the cart to check if this product already exists
+                cart.forEach((item) => {
+                    // Compare current cart item with the clicked product
+                    if (item.productId === productId) {
+                        matchingItem = item;
+                    }
+                });
+                // If product is already in the cart → increase its quantity
+                if (matchingItem) {
+                    matchingItem.quantity++;
+                    // If product is not in the cart → add it as a new item
+                } else {
+                    cart.push({
+                        productId: productId,
+                        quantity: 1
+                    });
+                }
+                console.log(cart);
+            });
+        });
     });
