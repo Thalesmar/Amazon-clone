@@ -1,0 +1,13 @@
+# Node
+node_modules/
+
+# Env (future)
+.env
+
+# Build
+dist/
+.vite/
+
+# OS files
+.DS_Store
+Thumbs.db
