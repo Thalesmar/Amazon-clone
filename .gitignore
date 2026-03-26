@@ -11,3 +11,9 @@ dist/
 # OS files
 .DS_Store
 Thumbs.db
+
+#API
+
+#TESTING FILES
+testing.html
+testing.js

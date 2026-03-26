@@ -1,108 +1,94 @@
+// 1. Get the product grid container from the DOM
 const jsProductGrid = document.getElementById("jsProductGrid");
 
-// get data from location or API
-fetch('./backend/products.json')
-    //convert data into usable JSON
-    .then(response => response.json())
-    //now we can work with data
-    .then(data => {
-        //Combining html together
-        let productsHTML = "";
-        //looping inside the data
+// 2. Fetch product data from JSON file
+fetch("./backend/products.json")
+    // 3. Convert response into JavaScript data
+    .then((response) => response.json())
+    .then((data) => {
+        // 4. Create empty string to store all product HTML
+        let productsHtml = "";
+
+        // 5. Loop through each product and build its HTML card
         data.forEach((product) => {
-            productsHTML += `<div class="product-container">
-          <div class="product-image-container">
-            <img class="product-image"
-              src="${product.image}">
-          </div>
+            productsHtml += `
+                <div class="product-container">
+                <div class="product-image-container">
+                    <img class="product-image" src="${product.image}">
+                </div>
 
-          <div class="product-name limit-text-to-2-lines">
-            ${product.name}
-          </div>
+                <div class="product-name limit-text-to-2-lines">
+                    ${product.name}
+                </div>
 
-          <div class="product-rating-container">
-            <img class="product-rating-stars"
-              src="images/ratings/rating-${product.rating.stars * 10}.png">
-            <div class="product-rating-count link-primary">
-              ${product.rating.count}
-            </div>
-          </div>
+                <div class="product-rating-container">
+                    <img class="product-rating-stars"
+                    src="images/ratings/rating-${product.rating.stars * 10}.png">
+                    <div class="product-rating-count link-primary">
+                    ${product.rating.count}
+                    </div>
+                </div>
 
-          <div class="product-price">
-            $${(product.priceCents / 100).toFixed(2)}
-          </div>
+                <div class="product-price">
+                    $${(product.priceCents / 100).toFixed(2)}
+                </div>
 
-          <div class="product-quantity-container">
-            <select>
-              <option selected value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
-          </div>
+                <div class="product-quantity-container">
+                    <select>
+                    <option selected value="1">1</option>
+                    <option value="2">2</option>
+                    </select>
+                </div>
 
-          <div class="product-spacer"></div>
-
-          <div class="added-to-cart">
-            <img src="images/icons/checkmark.png">
-            Added
-          </div>
-
-          <button class="add-to-cart-button button-primary js-add-to-cart"
-          data-product-id="${product.id}"
-          >
-            Add to Cart
-          </button>
-        </div>`;
+                <button class="add-to-cart-button button-primary" data-product-id =
+                ${product.id} >
+                    Add to Cart
+                </button>
+                </div>
+            `;
         });
-        jsProductGrid.innerHTML = productsHTML;
 
-        const jsAddToCart = document.querySelectorAll(".js-add-to-cart");
+        // 6. Insert all generated product HTML into the page
+        jsProductGrid.innerHTML = productsHtml;
 
-        let cart = [];
-        jsAddToCart.forEach((button) => {
+        // 7. Select all Add to Cart buttons after rendering
+        const addToCart = document.querySelectorAll(".add-to-cart-button");
+
+        // 8. Add a click event listener to each button
+        addToCart.forEach((button) => {
+            // 9. Get clicked product id from button dataset
             button.addEventListener("click", () => {
+                // 10. Check if clicked product already exists in cart
                 const productId = button.dataset.productId;
 
                 let matchingItem;
-                // Loop through the cart to check if this product already exists
                 cart.forEach((item) => {
-                    // Compare current cart item with the clicked product
-                    if (item.productId === productId) {
+                    // 11. If product exists, increase quantity
+                    if (productId === item.productId) {
                         matchingItem = item;
                     }
                 });
-                // If product is already in the cart → increase its quantity
+                // 12. If product does not exist, add it to cart
                 if (matchingItem) {
                     matchingItem.quantity++;
-                    // If product is not in the cart → add it as a new item
                 } else {
                     cart.push({
                         productId: productId,
-                        quantity: 1
+                        quantity: 1,
                     });
                 }
 
-                //calculate cart quantity
-                let cartQuantity = 0;
+                // 13. Calculate total quantity of all items in cart
+                const jsCartQuantity =
+                    document.querySelector(".js-cart-quantity");
+
+                let calcQuantity = 0;
+
                 cart.forEach((item) => {
-                    cartQuantity += item.quantity;
+                    calcQuantity += item.quantity;
                 });
-
-                const cartQuantityElement = document.querySelector(".js-cart-quantity");
-
-                if (cartQuantityElement) {
-                    cartQuantityElement.innerHTML = cartQuantity;
-                }
+                // 14. Update cart quantity in the DOM
+                jsCartQuantity.innerHTML = calcQuantity; // this edit the quantity and increase it
             });
-
-
-
         });
     });
