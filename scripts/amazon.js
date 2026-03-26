@@ -1,3 +1,6 @@
+// import variable
+import { cart } from '../scripts/cart.js'; // ../ means we go outside the folder 'scripts'
+
 // 1. Get the product grid container from the DOM
 const jsProductGrid = document.getElementById("jsProductGrid");
 
