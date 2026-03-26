@@ -34,12 +34,12 @@ fetch("./backend/products.json")
                 </div>
 
                 <div class="product-quantity-container">
-                    <select>
+                    <select class="js-quantity-select" >
                     <option selected value="1">1</option>
                     <option value="2">2</option>
                     </select>
                 </div>
-
+                <div class="added-to-cart" >✅Added</div>
                 <button class="add-to-cart-button button-primary" data-product-id =
                 ${product.id} >
                     Add to Cart
@@ -61,6 +61,15 @@ fetch("./backend/products.json")
                 // 10. Check if clicked product already exists in cart
                 const productId = button.dataset.productId;
 
+                //new way to access to DOM
+                const select = button
+                    // go ins the DOM to find the nearest parent with this class
+                    .closest(".product-container")
+                    //Now inside that product card find the <select> element
+                    .querySelector(".js-quantity-select");
+
+                const selectQuantityValue = Number(select.value);
+
                 let matchingItem;
                 cart.forEach((item) => {
                     // 11. If product exists, increase quantity
@@ -70,11 +79,11 @@ fetch("./backend/products.json")
                 });
                 // 12. If product does not exist, add it to cart
                 if (matchingItem) {
-                    matchingItem.quantity++;
+                    matchingItem.quantity += selectQuantityValue;
                 } else {
                     cart.push({
                         productId: productId,
-                        quantity: 1,
+                        quantity: selectQuantityValue,
                     });
                 }
 
@@ -89,6 +98,20 @@ fetch("./backend/products.json")
                 });
                 // 14. Update cart quantity in the DOM
                 jsCartQuantity.innerHTML = calcQuantity; // this edit the quantity and increase it
+
+                //changing the opacity of added-to-cart
+                const addedToCart = button
+                    .closest(".product-container")
+                    .querySelector(".added-to-cart");
+
+                // Show the "Added" message for the clicked product only
+                addedToCart.classList.add("added-to-cart-active");
+
+                // Hide it again after 3 seconds
+                setTimeout(() => {
+                    addedToCart.classList.remove("added-to-cart-active");
+                }, 5000);
+
             });
         });
     });
