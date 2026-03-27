@@ -1,5 +1,7 @@
 // import variable
-import { cart, addToCartFunc } from "../scripts/cart.js"; // ../ means we go outside the folder 'scripts'
+import { cart, addToCartFunc } from "../data/cart.js"; // ../ means we go outside the folder
+// 'scripts'
+import { formatCurrency } from "../scripts/utils/money.js";
 
 // 1. Get the product grid container from the DOM
 const jsProductGrid = document.getElementById("jsProductGrid");
@@ -42,7 +44,7 @@ const renderProducts = (data) => {
         </div>
 
         <div class="product-price">
-          $${(product.priceCents / 100).toFixed(2)}
+          $${formatCurrency(product.priceCents)}
         </div>
 
         <div class="product-quantity-container">
