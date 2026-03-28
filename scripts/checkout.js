@@ -75,7 +75,7 @@ const checkoutProductRender = (products) => {
                     <div class="delivery-option">
                     <input type="radio" checked
                         class="delivery-option-input"
-                        name="${matchingProduct.id}">
+                        name="delivery-option-${matchingProduct.id}">
                     <div>
                         <div class="delivery-option-date">
                         Tuesday, June 21
@@ -88,7 +88,7 @@ const checkoutProductRender = (products) => {
                     <div class="delivery-option">
                     <input type="radio"
                         class="delivery-option-input"
-                        name="delivery-option- ${matchingProduct.id}">
+                        name="delivery-option-${matchingProduct.id}">
                     <div>
                         <div class="delivery-option-date">
                         Wednesday, June 15

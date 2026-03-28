@@ -1,29 +1,32 @@
-// import variable
-import { cart, addToCartFunc } from "../data/cart.js"; // ../ means we go outside the folder
-// 'scripts'
+// import cart data and the function that adds items to the cart
+import { cart, addToCartFunc } from "../data/cart.js";
+
+// import helper function to convert cents into dollars
 import { formatCurrency } from "../scripts/utils/money.js";
 
-// 1. Get the product grid container from the DOM
+// get the container where all product cards will be rendered
 const jsProductGrid = document.getElementById("jsProductGrid");
 
-// 2. Fetch product data from JSON file
+// fetch product data from the JSON file
 fetch("./backend/products.json")
-    // 3. Convert response into JavaScript data
-    .then((response) => response.json())
+    .then((response) => response.json()) // convert response to JavaScript object
     .then((data) => {
-        //we render all product here
+        // render all product cards on the page
         renderProducts(data);
 
-        // after rendering, buttons now exist in DOM
+        // show current total cart quantity in the header
+        updateCartQuantity();
+
+        // after rendering HTML, buttons now exist in DOM
         setupAddToCartButtons();
     });
 
-// function to render products
+// function to render all product cards
 const renderProducts = (data) => {
-    // 4. Create empty string to store all product HTML
+    // this string will store all product HTML
     let productsHtml = "";
 
-    // 5. Loop through each product and build its HTML card
+    // loop through each product and generate its HTML
     data.forEach((product) => {
         productsHtml += `
       <div class="product-container">
@@ -63,66 +66,71 @@ const renderProducts = (data) => {
     `;
     });
 
-    // 6. Insert all generated product HTML into the page
+    // insert all generated HTML into the page
     jsProductGrid.innerHTML = productsHtml;
 };
 
-// function to update cart quantity in DOM
-// this code is responsible for changing quantity number from 0 to 1, 2, 3
+// function to update the cart quantity shown in the header
 const updateCartQuantity = () => {
     const jsCartQuantity = document.querySelector(".js-cart-quantity");
-    //set cartQuantity start from 0
+
+    // start from 0
     let calcQuantity = 0;
-    //we loop inside cartItems and add the quantity to cart
+
+    // loop through cart items and add all quantities together
     cart.forEach((cartItem) => {
         calcQuantity += cartItem.quantity;
     });
 
+    // display total quantity in the DOM
     jsCartQuantity.innerHTML = calcQuantity;
 };
 
-// function to show added message
+// function to show the "Added" message for the clicked product
 const showAddedMessage = (button) => {
-    //new way of DOM
+    // find the "Added" message inside the same product card
     const addedToCart = button
         .closest(".product-container")
         .querySelector(".added-to-cart");
 
-    // Show the "Added" message for the clicked product only
+    // show the message
     addedToCart.classList.add("added-to-cart-active");
 
-    // Hide it again after 5 seconds
+    // hide the message again after 5 seconds
     setTimeout(() => {
         addedToCart.classList.remove("added-to-cart-active");
     }, 5000);
 };
 
-// function to setup all button events
+// function to add click events to all Add to Cart buttons
 const setupAddToCartButtons = () => {
-    // Select all Add to Cart buttons after rendering
-    const addToCart = document.querySelectorAll(".add-to-cart-button");
+    // select all Add to Cart buttons after rendering
+    const addToCartButtons = document.querySelectorAll(".add-to-cart-button");
 
-    // Add a click event listener to each button
-    addToCart.forEach((button) => {
+    // loop through each button
+    addToCartButtons.forEach((button) => {
         button.addEventListener("click", () => {
-            // Get clicked product id from button dataset
+            // get product id from the clicked button
             const productId = button.dataset.productId;
 
-            // get the select of this product only
+            // find the current product card
             const productContainer = button.closest(".product-container");
-            const select = productContainer.querySelector(".js-quantity-select",);
 
-            //get value from the select and convert to number
-            // we already worked with this above in addToCartFunc function
+            // get the quantity select inside this product card
+            const select = productContainer.querySelector(
+                ".js-quantity-select",
+            );
+
+            // convert selected value from string to number
             const selectQuantityValue = Number(select.value);
 
-            // add to cart
+            // add selected product and quantity to cart
             addToCartFunc(productId, selectQuantityValue);
 
-            // update quantity in cart icon
+            // update cart quantity in the header
             updateCartQuantity();
 
-            // show added message
+            // show "Added" message
             showAddedMessage(button);
         });
     });
