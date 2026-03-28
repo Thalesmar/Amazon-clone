@@ -140,6 +140,8 @@ const modifyCheckoutItems = () => {
             const jsCartItemContainer = document.querySelector(
                 `.js-cart-item-container-${productId}`
             );
+            //this remove the div of the product
+            jsCartItemContainer.remove();
         })
     });
 
