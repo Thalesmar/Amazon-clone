@@ -1,6 +1,6 @@
 // we export variable
 // and we save the data
-export const cart = [
+export let cart = [
     {
         productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
         quantity: 2,
@@ -32,4 +32,21 @@ export const addToCartFunc = (productId, selectQuantityValue) => {
             quantity: selectQuantityValue,
         });
     }
+};
+
+//deleting the product
+
+export const handleRemoveFromCart = (productId) => {
+    let newCart = [];
+
+    //loop inside cart
+    cart.forEach((cartItem) => {
+        // keep only items that are not the one we want to remove
+        if (productId !== cartItem.productId) {
+            //push cartItem to newCart
+            newCart.push(cartItem);
+        }
+    });
+
+    cart = newCart;
 };
