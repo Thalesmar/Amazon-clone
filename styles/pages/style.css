@@ -163,4 +163,11 @@ a{
     outline: none;
 }
 
+.quantity-input-style{
+    width: 50px;
+    margin-right: 10px;
+}
 
+.quantity-input-style:focus {
+    outline: none;
+}

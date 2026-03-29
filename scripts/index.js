@@ -1,15 +1,16 @@
 // import cart data and the function that adds items to the cart
 import { cart, addToCartFunc } from "../data/cart.js";
+import { updateCartQuantity } from "../data/cart.js";
 
 // import helper function to convert cents into dollars
-import { formatCurrency } from "../scripts/utils/money.js";
+import { formatCurrency } from "./utils/money.js";
 
 // get the container where all product cards will be rendered
 const jsProductGrid = document.getElementById("jsProductGrid");
 
 // fetch product data from the JSON file
 fetch("./backend/products.json")
-    .then((response) => response.json()) // convert response to JavaScript object
+    .then((response) => response.json())
     .then((data) => {
         // render all product cards on the page
         renderProducts(data);
@@ -40,7 +41,7 @@ const renderProducts = (data) => {
 
         <div class="product-rating-container">
           <img class="product-rating-stars"
-          src="images/ratings/rating-${product.rating.stars * 10}.png">
+            src="images/ratings/rating-${product.rating.stars * 10}.png">
           <div class="product-rating-count link-primary">
             ${product.rating.count}
           </div>
@@ -57,7 +58,7 @@ const renderProducts = (data) => {
           </select>
         </div>
 
-        <div class="added-to-cart">✅Added</div>
+        <div class="added-to-cart">✅ Added</div>
 
         <button class="add-to-cart-button button-primary" data-product-id="${product.id}">
           Add to Cart
@@ -70,21 +71,6 @@ const renderProducts = (data) => {
     jsProductGrid.innerHTML = productsHtml;
 };
 
-// function to update the cart quantity shown in the header
-const updateCartQuantity = () => {
-    const jsCartQuantity = document.querySelector(".js-cart-quantity");
-
-    // start from 0
-    let calcQuantity = 0;
-
-    // loop through cart items and add all quantities together
-    cart.forEach((cartItem) => {
-        calcQuantity += cartItem.quantity;
-    });
-
-    // display total quantity in the DOM
-    jsCartQuantity.innerHTML = calcQuantity;
-};
 
 // function to show the "Added" message for the clicked product
 const showAddedMessage = (button) => {
