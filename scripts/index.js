@@ -52,10 +52,18 @@ const renderProducts = (data) => {
         </div>
 
         <div class="product-quantity-container">
-          <select class="js-quantity-select">
-            <option selected value="1">1</option>
-            <option value="2">2</option>
-          </select>
+            <select class="js-quantity-select">
+                <option selected value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
         </div>
 
         <div class="added-to-cart">✅ Added</div>
@@ -70,7 +78,6 @@ const renderProducts = (data) => {
     // insert all generated HTML into the page
     jsProductGrid.innerHTML = productsHtml;
 };
-
 
 // function to show the "Added" message for the clicked product
 const showAddedMessage = (button) => {
