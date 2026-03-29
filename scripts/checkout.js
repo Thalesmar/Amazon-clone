@@ -228,11 +228,18 @@ const modifyCheckoutItems = () => {
                 const newInputValue = Number(newInput.value);
 
                 //if value not valid
-                if (isNaN(newInputValue) || newInputValue < 1) return;
+                if (isNaN(newInputValue) || newInputValue < 1) {
+                    alert(
+                        "Invalid quantity! Please enter a number greater than 0.",
+                    );
+                    return;
+                }
+
+                // ✅ valid case
 
                 setTimeout(() => {
-                    alert(`Quantity changed to 5`);
-                }, 2000);
+                    alert(`Quantity changed to ${newInputValue}`);
+                }, 500);
 
                 // update cart data
                 //You gave it 2 values because the function needs 2 pieces of information:
